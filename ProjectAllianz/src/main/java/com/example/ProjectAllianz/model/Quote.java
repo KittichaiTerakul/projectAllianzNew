@@ -14,10 +14,27 @@ public class Quote {
     private String firstName;
     @Column(name = "lastName")
     private String lastName;
+
+    @Column(name = "gender")
+    private String gender;
     @Column(name = "dateOfBirth")
     private String dateOfBirth;
     @Column(name = "PreferredLanguage")
     private String preferredLanguages;
+
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
     public String getDateOfBirth() {
         return dateOfBirth;

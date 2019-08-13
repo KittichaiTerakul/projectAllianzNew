@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
 import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +37,9 @@ public class CustomerController {
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public List<QuoteDto> getAllCustomer(){
+
+
+
         List<Quote> quotes = quoteService.getAllCustomer();
         return quotes.stream().map(quote -> convertToDto(quote)).collect(Collectors.toList());
     }
@@ -48,33 +52,48 @@ public class CustomerController {
      *
      */
 
+
+    /**
+     *
+     * ยังใช้ method นี้ไม่ได้
+     */
+
 //    @ApiOperation(value = "Create Quote", notes = "Create Quote Test")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public QuoteDto createCustomer(@RequestBody QuoteDto quoteDto) throws ParseException {
-        Quote quote = convertToEntity(quoteDto);
-        Quote quoteCreate = quoteService.addCustomer(quote);
-        return convertToDto(quote);
+    public void createCustomer(@RequestBody QuoteDto quoteDto) throws ParseException {
+
+        if (quoteDto.getFirstName().equals("") || quoteDto.getLastName().equals("") || quoteDto.getGender().equals("") ||
+            quoteDto.getDateOfBirth().equals("") || quoteDto.getPreferredLanguages().equals("")){
+            System.out.println("Please input data");
+        }
+
+        else {
+            Quote quote = convertToEntity(quoteDto);
+            Quote quoteCreate = quoteService.addCustomer(quote);
+            convertToDto(quote);
+
+        }
     }
     //
 //
 //    @ApiOperation(value = "Get Quote by id", notes = "Get Quote by id test")
-//
-//    @GetMapping(value = "/{id}")
-//    @ResponseBody
-//    public QuoteDto getCustomer(@PathVariable("id") int id){
-//        return convertToDto(quoteService.getCustomerById(id));
-//    }
+
+    @GetMapping(value = "/{id}")
+    @ResponseBody
+    public QuoteDto getCustomer(@PathVariable("id") int id){
+        return convertToDto(quoteService.getCustomerById(id));
+    }
 //
 //    @ApiOperation(value = "Put Quote", notes = "Put Quote test")
 //
-//    @PutMapping(value = "/{id}" )
-//    @ResponseStatus(HttpStatus.OK)
-//    public void updateCustomer(@RequestBody QuoteDto quoteDto) throws ParseException{
-//        Quote quote = convertToEntity(quoteDto);
-//
-//    }
+    @PutMapping(value = "/{id}" )
+    @ResponseStatus(HttpStatus.OK)
+    public void updateCustomer(@RequestBody QuoteDto quoteDto) throws ParseException{
+        Quote quote = convertToEntity(quoteDto);
+
+    }
 
 
 
@@ -99,13 +118,11 @@ public class CustomerController {
      */
 
     private Quote convertToEntity(QuoteDto quoteDto) throws ParseException {
-        Quote quote = modelMapper.map(quoteDto, Quote.class);
+        Quote quote = modelMapper.map(quoteDto , Quote.class);
 
-        if ((quoteDto.getId()) != 0 ){
-            Quote oldQuote = quoteService.getCustomerById(quoteDto.getId());
-            System.out.println(quote.getId()+ " Quote");
-            System.out.println(quoteDto.getId() + "New Quote");
-            quote.setId(oldQuote.getId());
+
+        if (quoteDto.getId() !=  0){
+            Quote oldQuote = quoteService.getCustomerById(quote.getId());
 
         }
         return quote;

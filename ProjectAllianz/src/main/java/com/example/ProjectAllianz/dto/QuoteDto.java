@@ -5,9 +5,19 @@ public class QuoteDto {
     private int id;
     private String firstName;
     private String lastName;
+    private String gender;
     private String dateOfBirth;
     private String preferredLanguages;
 
+
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
     public int getId() {
         return id;
