@@ -1,5 +1,7 @@
 package com.example.ProjectAllianz.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,6 +10,8 @@ public class Quote {
     @Id
 
     @Column(name= "quoteId")
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="id")
     private int id;
 
     @Column(name = "firstName")
